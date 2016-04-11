@@ -72,6 +72,16 @@
                 android:layout_marginTop="5dp"
                 tools:text="rated"
                  />
+            <TextView
+                android:id="@+id/tv_overView"
+                tools:text="hello world"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/card_view"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                />
 
         </RelativeLayout>
 

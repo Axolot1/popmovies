@@ -2,12 +2,10 @@ package com.axolotl.popmovies.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,6 +38,8 @@ public class DetailActivity extends AppCompatActivity {
     TextView tvVote;
 
     public static final String EXTRA_MOVIE = "extra_movie";
+    @Bind(R.id.tv_overView)
+    TextView tvOverView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,13 +48,18 @@ public class DetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupView();
+    }
+
+    private void setupView() {
         Intent i = getIntent();
         Movie m = Parcels.unwrap(i.getParcelableExtra(EXTRA_MOVIE));
         if (m != null) {
             Picasso.with(this).load(TdbMovieApi.IMAGE_URL + m.getPosterPath()).into(ivPortal);
-            tvTitle.setText(m.getTitle());
+            tvTitle.setText(m.getOriginalTitle());
             tvReleaseDate.setText(m.getReleaseDate());
             tvVote.setText(m.getVoteAverage() + "");
+            tvOverView.setText(m.getOverview());
         }
     }
 
