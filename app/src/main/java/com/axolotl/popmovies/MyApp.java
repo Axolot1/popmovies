@@ -8,7 +8,9 @@ import com.axolotl.popmovies.dagger.component.NetComponent;
 import com.axolotl.popmovies.dagger.module.AppModule;
 
 /**
- * Created by axolotl on 16/4/6.
+ * project base on
+ * https://www.future-processing.pl/blog/dependency-injection-with-dagger-2/
+ * https://github.com/antoniolg/androidmvp
  */
 public class MyApp extends Application {
     private NetComponent mNetComponent;

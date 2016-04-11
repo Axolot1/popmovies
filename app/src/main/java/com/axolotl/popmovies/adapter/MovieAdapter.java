@@ -78,6 +78,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         }
     }
 
+    //from http://stackoverflow.com/questions/28531996/android-recyclerview-gridlayoutmanager-column-spacing
     public static class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
         private int spanCount;
