@@ -10,10 +10,11 @@
     android:background="@color/gray"
     tools:showIn="@layout/activity_main">
 
-    <android.support.v7.widget.RecyclerView
+    <com.axolotl.popmovies.ui.custom.AutoFitRecyclerView
         android:id="@+id/recyclerView_movies"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:columnWidth="@dimen/portal_width"
         tools:listitem="@layout/recy_item"
         />
 

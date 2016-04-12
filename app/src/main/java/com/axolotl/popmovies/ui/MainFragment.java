@@ -4,9 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.ContentLoadingProgressBar;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,12 +16,10 @@ import com.axolotl.popmovies.MyApp;
 import com.axolotl.popmovies.R;
 import com.axolotl.popmovies.adapter.MovieAdapter;
 import com.axolotl.popmovies.dagger.component.DaggerMainComponent;
-import com.axolotl.popmovies.dagger.component.MainComponent;
 import com.axolotl.popmovies.dagger.module.MainFraModule;
 import com.axolotl.popmovies.presenter.MainFragmentPresenter;
-import com.axolotl.popmovies.retrofit.TdbMovieApi;
 import com.axolotl.popmovies.retrofit.pojo.Movie;
-import com.axolotl.popmovies.retrofit.pojo.PopMovies;
+import com.axolotl.popmovies.ui.custom.AutoFitRecyclerView;
 
 import java.util.List;
 
@@ -32,19 +27,17 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class MainFragment extends Fragment implements MainFragmentView {
 
-    @Bind(R.id.recyclerView_movies)
-    RecyclerView recyclerViewMovies;
+
     @Bind(R.id.pb_loading)
     ContentLoadingProgressBar pbLoading;
+    @Bind(R.id.recyclerView_movies)
+    AutoFitRecyclerView recyclerViewMovies;
 
     private MovieAdapter mAdapter;
 
@@ -92,12 +85,16 @@ public class MainFragment extends Fragment implements MainFragmentView {
     }
 
     private void setupRecyclerView() {
-        recyclerViewMovies.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        int spanCount = 2; // 3 columns
-        int spacing = 50; // 50px
-        boolean includeEdge = false;
-        recyclerViewMovies.addItemDecoration(new MovieAdapter.GridSpacingItemDecoration(spanCount, spacing, includeEdge));
+        recyclerViewMovies.addItemDecoration(new AutoFitRecyclerView.MarginDecoration(getContext()
+                .getResources().getDimensionPixelSize(R.dimen.item_margin)));
         recyclerViewMovies.setAdapter(mAdapter);
+//        recyclerViewMovies.setLayoutManager(new GridLayoutManager(getContext(), 2));
+//        int spanCount = 2; // 3 columns
+//        int spacing = 50; // 50px
+//        boolean includeEdge = false;
+//        recyclerViewMovies.addItemDecoration(new MovieAdapter.GridSpacingItemDecoration(spanCount, spacing, includeEdge));
+//        recyclerViewMovies.setAdapter(mAdapter);
+
     }
 
     @Override
@@ -107,13 +104,13 @@ public class MainFragment extends Fragment implements MainFragmentView {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-       inflater.inflate(R.menu.menu_main, menu);
+        inflater.inflate(R.menu.menu_main, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case R.id.most_popular:
                 mPresenter.clickMenuPopular();
                 break;
@@ -139,14 +136,14 @@ public class MainFragment extends Fragment implements MainFragmentView {
 
     @Override
     public void showProgress() {
-        if(pbLoading != null) {
+        if (pbLoading != null) {
             pbLoading.show();
         }
     }
 
     @Override
     public void hideProgress() {
-        if(pbLoading != null) {
+        if (pbLoading != null) {
             pbLoading.hide();
         }
     }
