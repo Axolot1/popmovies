@@ -20,5 +20,4 @@ import dagger.Component;
 public interface NetComponent {
     TdbMovieApi getMovieApi(); //expose to downstream
     Picasso getPicasso();
-    Application getApplication();
 }

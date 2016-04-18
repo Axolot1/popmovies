@@ -13,6 +13,7 @@ import com.axolotl.popmovies.R;
 import com.axolotl.popmovies.retrofit.TdbMovieApi;
 import com.axolotl.popmovies.retrofit.pojo.Movie;
 import com.axolotl.popmovies.ui.DetailActivity;
+import com.axolotl.popmovies.ui.MainFragmentView;
 import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcel;
@@ -30,13 +31,13 @@ import butterknife.ButterKnife;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
     private List<Movie> mMovies;
-    Context mContext;
     Picasso mPicasso;
+    MainFragmentView mMainView;
 
-    public MovieAdapter(Context context, Picasso picasso) {
+    public MovieAdapter(Picasso picasso, MainFragmentView view) {
         this.mPicasso = picasso;
-        this.mContext = context;
         this.mMovies = new ArrayList<>();
+        this.mMainView = view;
     }
 
     public void setData(List<Movie> movies){
@@ -57,9 +58,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         holder.ivPortal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(mContext, DetailActivity.class);
-                i.putExtra(DetailActivity.EXTRA_MOVIE, Parcels.wrap(m));
-                mContext.startActivity(i);
+                mMainView.onItemClick(m);
             }
         });
     }

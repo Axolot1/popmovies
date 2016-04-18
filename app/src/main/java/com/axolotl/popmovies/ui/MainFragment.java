@@ -1,5 +1,6 @@
 package com.axolotl.popmovies.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,8 @@ import com.axolotl.popmovies.dagger.module.MainFraModule;
 import com.axolotl.popmovies.presenter.MainFragmentPresenter;
 import com.axolotl.popmovies.retrofit.pojo.Movie;
 import com.axolotl.popmovies.ui.custom.AutoFitRecyclerView;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -158,6 +161,13 @@ public class MainFragment extends Fragment implements MainFragmentView {
     @Override
     public void showMessage(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onItemClick(Movie m) {
+        Intent i = new Intent(getActivity(), DetailActivity.class);
+        i.putExtra(DetailActivity.EXTRA_MOVIE, Parcels.wrap(m));
+        startActivity(i);
     }
 
     @Override

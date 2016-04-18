@@ -15,4 +15,6 @@ public interface MainFragmentView {
     void setItems(List<Movie> items);
 
     void showMessage(String message);
+
+    void onItemClick(Movie m);
 }
