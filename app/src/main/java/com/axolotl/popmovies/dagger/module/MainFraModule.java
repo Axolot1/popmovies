@@ -1,11 +1,16 @@
 package com.axolotl.popmovies.dagger.module;
 
+import android.app.Application;
+
+import com.axolotl.popmovies.adapter.MovieAdapter;
 import com.axolotl.popmovies.interactor.MainInteractImpl;
 import com.axolotl.popmovies.interactor.MainInteractor;
 import com.axolotl.popmovies.presenter.MainFragmentPresenter;
 import com.axolotl.popmovies.presenter.MainPresenterImpl;
 import com.axolotl.popmovies.retrofit.TdbMovieApi;
+import com.axolotl.popmovies.retrofit.pojo.Movie;
 import com.axolotl.popmovies.ui.MainFragmentView;
+import com.squareup.picasso.Picasso;
 
 import dagger.Module;
 import dagger.Provides;
@@ -34,5 +39,10 @@ public class MainFraModule {
     @Provides
     MainInteractor provideInteractor(TdbMovieApi api){
         return new MainInteractImpl(api);
+    }
+
+    @Provides
+    MovieAdapter provideMovieAdapter(Application application, Picasso picasso){
+        return new MovieAdapter(application, picasso);
     }
 }

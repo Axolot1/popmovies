@@ -30,9 +30,11 @@ import butterknife.ButterKnife;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
     private List<Movie> mMovies;
-    private Context mContext;
+    Context mContext;
+    Picasso mPicasso;
 
-    public MovieAdapter(Context context) {
+    public MovieAdapter(Context context, Picasso picasso) {
+        this.mPicasso = picasso;
         this.mContext = context;
         this.mMovies = new ArrayList<>();
     }
@@ -51,7 +53,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Movie m = mMovies.get(position);
         String posUrl = TdbMovieApi.IMAGE_URL + m.getPosterPath();
-        Picasso.with(mContext).load(posUrl).into(holder.ivPortal);
+        mPicasso.load(posUrl).into(holder.ivPortal);
         holder.ivPortal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

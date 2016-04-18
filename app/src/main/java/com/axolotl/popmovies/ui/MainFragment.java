@@ -39,7 +39,8 @@ public class MainFragment extends Fragment implements MainFragmentView {
     @Bind(R.id.recyclerView_movies)
     AutoFitRecyclerView recyclerViewMovies;
 
-    private MovieAdapter mAdapter;
+    @Inject
+    MovieAdapter mAdapter;
 
     @Inject
     MainFragmentPresenter mPresenter;
@@ -52,7 +53,6 @@ public class MainFragment extends Fragment implements MainFragmentView {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initializeInjector();
         mPresenter.initialize();
     }
 
@@ -67,7 +67,8 @@ public class MainFragment extends Fragment implements MainFragmentView {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mAdapter = new MovieAdapter(getContext());
+        initializeInjector();
+
     }
 
     @Override
