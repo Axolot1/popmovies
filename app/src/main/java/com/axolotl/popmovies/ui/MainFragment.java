@@ -72,6 +72,7 @@ public class MainFragment extends Fragment implements MainFragmentView {
         setHasOptionsMenu(true);
         initializeInjector();
 
+
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.axolotl.popmovies.R;
+import com.axolotl.popmovies.retrofit.pojo.Movie;
 
 public class MainActivity extends AppCompatActivity {
 

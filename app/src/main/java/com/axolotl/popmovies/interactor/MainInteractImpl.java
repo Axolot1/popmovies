@@ -29,7 +29,11 @@ public class MainInteractImpl implements MainInteractor {
             @Override
             public void onResponse(Call<PopMovies> call, Response<PopMovies> response) {
                 if(response.isSuccessful()){
-                    listener.onLoadMovieSuccess(response.body().getResults());
+                    List<Movie> movies = response.body().getResults();
+                    listener.onLoadMovieSuccess(movies);
+                    for (Movie m : movies){
+                        m.save();
+                    }
                 }
             }
 

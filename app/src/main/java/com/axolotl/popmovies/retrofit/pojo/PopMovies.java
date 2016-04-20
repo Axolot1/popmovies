@@ -9,7 +9,6 @@ import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
-@Parcel
 @Generated("org.jsonschema2pojo")
 public class PopMovies {
 

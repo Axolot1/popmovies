@@ -7,18 +7,27 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.axolotl.popmovies.retrofit.TdbMovieApi;
+import com.axolotl.popmovies.utils.NetHelper;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Modifier;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
+import okhttp3.CacheControl;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -31,7 +40,7 @@ import static com.jakewharton.byteunits.DecimalByteUnit.MEGABYTES;
 @Module
 public class NetModule {
 
-    static final int DISK_CACHE_SIZE = (int) MEGABYTES.toBytes(50);
+    static final int DISK_CACHE_SIZE = (int) MEGABYTES.toMegabytes(10);
 
 
     @Provides
@@ -44,9 +53,11 @@ public class NetModule {
     @Provides
     @Singleton
     TdbMovieApi provideMovieApi(OkHttpClient client) {
+        Gson gson = new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation().create();
         return new Retrofit.Builder()
                 .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(TdbMovieApi.BASE_URL)
                 .build().create(TdbMovieApi.class);
     }
@@ -85,8 +96,28 @@ public class NetModule {
         // Install an HTTP cache in the application cache directory.
         File cacheDir = new File(app.getCacheDir(), "http");
         Cache cache = new Cache(cacheDir, DISK_CACHE_SIZE);
-        return new OkHttpClient.Builder()
-                .cache(cache);
+        return new OkHttpClient.Builder().cache(cache);
+    }
+
+    public class MInterceptor implements Interceptor
+    {
+        @Override
+        public Response intercept(Chain chain) throws IOException
+        {
+            Request request = chain.request();
+            if (!NetHelper.getInstance().isConnected())
+            {
+                request = request
+                        .newBuilder()
+                        .cacheControl(CacheControl.FORCE_CACHE)
+                        .build();
+            }
+            Response originalResponse = chain.proceed(request);
+            return originalResponse
+                    .newBuilder()
+                    .header("Cache-Control", "public,max-age=3600")
+                    .removeHeader("Pragma").build();
+        }
     }
 }
 

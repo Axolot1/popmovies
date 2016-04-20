@@ -1,62 +1,87 @@
 
 package com.axolotl.popmovies.retrofit.pojo;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.Generated;
+import android.provider.BaseColumns;
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.Parcel;
+import java.util.ArrayList;
+import java.util.List;
 
-@Parcel
-@Generated("org.jsonschema2pojo")
-public class Movie {
+@Table(name = "Movie", id = BaseColumns._ID)
+public class Movie extends Model{
+    @Column(name = "remote_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+    @SerializedName("id")
+    @Expose
+    public Integer movieId;
 
+    @Column(name = "PosterPath")
     @SerializedName("poster_path")
     @Expose
     public String posterPath;
+
+    @Column(name = "Adult")
     @SerializedName("adult")
     @Expose
     public Boolean adult;
+
+    @Column(name = "OverView")
     @SerializedName("overview")
     @Expose
     public String overview;
+
+    @Column(name = "ReleaseDate")
     @SerializedName("release_date")
     @Expose
     public String releaseDate;
+
+    @Column(name = "GenreIds")
     @SerializedName("genre_ids")
     @Expose
     public List<Integer> genreIds = new ArrayList<Integer>();
-    @SerializedName("id")
-    @Expose
-    public Integer id;
+
+    @Column(name = "OriginalTitle")
     @SerializedName("original_title")
     @Expose
     public String originalTitle;
+
+    @Column(name = "OriginalLanguage")
     @SerializedName("original_language")
     @Expose
     public String originalLanguage;
+
+    @Column(name = "Title")
     @SerializedName("title")
     @Expose
     public String title;
+
+    @Column(name = "BackdropPath")
     @SerializedName("backdrop_path")
     @Expose
     public String backdropPath;
+
     @SerializedName("popularity")
     @Expose
     public Double popularity;
+
     @SerializedName("vote_count")
     @Expose
     public Integer voteCount;
+
     @SerializedName("video")
     @Expose
     public Boolean video;
+
     @SerializedName("vote_average")
     @Expose
     public Double voteAverage;
 
     public Movie() {
+        super();
     }
 
     public String getPosterPath() {
@@ -99,12 +124,12 @@ public class Movie {
         this.genreIds = genreIds;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getMovieId() {
+        return movieId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setMovieId(Integer id) {
+        this.movieId = id;
     }
 
     public String getOriginalTitle() {

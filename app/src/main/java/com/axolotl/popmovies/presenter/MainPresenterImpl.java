@@ -1,5 +1,7 @@
 package com.axolotl.popmovies.presenter;
 
+import android.util.Log;
+
 import com.axolotl.popmovies.interactor.MainInteractor;
 import com.axolotl.popmovies.retrofit.pojo.Movie;
 import com.axolotl.popmovies.ui.MainFragmentView;
@@ -83,6 +85,8 @@ public class MainPresenterImpl implements MainFragmentPresenter, MainInteractor.
     public void onLoadFail(String error) {
         if(mMainView != null) {
             mMainView.showMessage(error);
+            mMainView.hideProgress();
+            Log.i("pop", error);
         }
     }
 }
