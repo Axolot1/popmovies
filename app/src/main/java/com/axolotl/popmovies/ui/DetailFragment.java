@@ -14,6 +14,7 @@ import android.widget.ToggleButton;
 import com.axolotl.popmovies.R;
 import com.axolotl.popmovies.retrofit.TdbMovieApi;
 import com.axolotl.popmovies.retrofit.pojo.Movie;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
@@ -62,8 +63,9 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.detail_layout, container, false);
         ButterKnife.bind(this, v);
-
-        Picasso.with(getContext()).load(TdbMovieApi.IMAGE_URL + mMovie.getPosterPath()).into(ivPortal);
+        String porsterUrl = TdbMovieApi.IMAGE_URL + mMovie.getPosterPath();
+        ImageLoader.getInstance().displayImage(porsterUrl, ivPortal);
+//        Picasso.with(getContext()).load(TdbMovieApi.IMAGE_URL + mMovie.getPosterPath()).into(ivPortal);
         tvTitle.setText(mMovie.getOriginalTitle());
         tvReleaseDate.setText(mMovie.getReleaseDate());
         tvVote.setText(String.format("%s", mMovie.getVoteAverage()));

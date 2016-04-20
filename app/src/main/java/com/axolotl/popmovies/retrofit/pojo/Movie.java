@@ -9,9 +9,13 @@ import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+import org.parceler.ParcelClass;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Parcel(value = Parcel.Serialization.BEAN)
 @Table(name = "Movie", id = BaseColumns._ID)
 public class Movie extends Model{
     @Column(name = "remote_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)

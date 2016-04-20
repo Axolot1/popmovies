@@ -14,6 +14,7 @@ import com.axolotl.popmovies.retrofit.TdbMovieApi;
 import com.axolotl.popmovies.retrofit.pojo.Movie;
 import com.axolotl.popmovies.ui.DetailActivity;
 import com.axolotl.popmovies.ui.MainFragmentView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcel;
@@ -54,7 +55,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Movie m = mMovies.get(position);
         String posUrl = TdbMovieApi.IMAGE_URL + m.getPosterPath();
-        mPicasso.load(posUrl).into(holder.ivPortal);
+        ImageLoader.getInstance().displayImage(posUrl, holder.ivPortal);
+//        mPicasso.load(posUrl).into(holder.ivPortal);
         holder.ivPortal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -3,6 +3,7 @@ package com.axolotl.popmovies.dagger.module;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -16,7 +17,6 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Modifier;
 
 import javax.inject.Singleton;
 
@@ -97,6 +97,16 @@ public class NetModule {
         File cacheDir = new File(app.getCacheDir(), "http");
         Cache cache = new Cache(cacheDir, DISK_CACHE_SIZE);
         return new OkHttpClient.Builder().cache(cache);
+    }
+
+    public File getAlbumStorageDir(String albumName) {
+        // Get the directory for the user's public pictures directory.
+        File file = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), albumName);
+        if (!file.mkdirs()) {
+//            Log.e(LOG_TAG, "Directory not created");
+        }
+        return file;
     }
 
     public class MInterceptor implements Interceptor

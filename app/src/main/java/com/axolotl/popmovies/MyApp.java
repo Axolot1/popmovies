@@ -1,13 +1,14 @@
 package com.axolotl.popmovies;
 
-import android.app.Application;
 import android.content.Context;
 
-import com.activeandroid.ActiveAndroid;
 import com.axolotl.popmovies.dagger.component.DaggerNetComponent;
 import com.axolotl.popmovies.dagger.component.NetComponent;
 import com.axolotl.popmovies.dagger.module.AppModule;
 import com.facebook.stetho.Stetho;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 /**
  * project base on
@@ -22,8 +23,19 @@ public class MyApp extends com.activeandroid.app.Application {
         super.onCreate();
         this.initializeInjector();
         Stetho.initializeWithDefaults(this);
+        initialUIL();
 
+    }
 
+    private void initialUIL() {
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .build();
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
+                .defaultDisplayImageOptions(defaultOptions)
+                .build();
+        ImageLoader.getInstance().init(config);
     }
 
     private void initializeInjector() {
@@ -31,6 +43,6 @@ public class MyApp extends com.activeandroid.app.Application {
     }
 
     public static NetComponent getNetComponent(Context context) {
-        return ((MyApp)context.getApplicationContext()).mNetComponent;
+        return ((MyApp) context.getApplicationContext()).mNetComponent;
     }
 }

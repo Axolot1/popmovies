@@ -28,17 +28,18 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         ButterKnife.bind(this);
-//
-//        if(savedInstanceState == null){
-//            Intent i = getIntent();
-//            DetailFragment detailFragment = new DetailFragment();
-//            Bundle bundle = new Bundle();
-//            bundle.putParcelable(DetailFragment.ARG_MOVIE, i.getParcelableExtra(EXTRA_MOVIE));
-//            detailFragment.setArguments(bundle);
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.movie_detail_container, detailFragment).commit();
-//        }
+
+        if(savedInstanceState == null){
+            Intent i = getIntent();
+            DetailFragment detailFragment = new DetailFragment();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(DetailFragment.ARG_MOVIE, i.getParcelableExtra(EXTRA_MOVIE));
+            detailFragment.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.movie_detail_container, detailFragment).commit();
+        }
     }
 
 }
