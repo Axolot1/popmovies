@@ -2,9 +2,11 @@ package com.axolotl.popmovies.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.ContentLoadingProgressBar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,6 +38,7 @@ import butterknife.ButterKnife;
  */
 public class MainFragment extends Fragment implements MainFragmentView {
 
+    public static final String EXTRA_MOVIES = "extra_movies";
 
     @Bind(R.id.pb_loading)
     ContentLoadingProgressBar pbLoading;
@@ -53,11 +56,9 @@ public class MainFragment extends Fragment implements MainFragmentView {
     public MainFragment() {
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mPresenter.initialize();
-    }
+
+
+
 
     private void initializeInjector() {
         DaggerMainComponent.builder()
@@ -72,40 +73,58 @@ public class MainFragment extends Fragment implements MainFragmentView {
         setHasOptionsMenu(true);
         initializeInjector();
 
-
+        Log.i(TAG, "onCreate");
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.i(TAG, "onCreateView");
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
-        setupRecyclerView();
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setupRecyclerView();
+        if(savedInstanceState == null){
+            mPresenter.initialize();
+        }
     }
 
     private void setupRecyclerView() {
         recyclerViewMovies.addItemDecoration(new AutoFitRecyclerView.MarginDecoration(getContext()
                 .getResources().getDimensionPixelSize(R.dimen.item_margin)));
         recyclerViewMovies.setAdapter(mAdapter);
-//        recyclerViewMovies.setLayoutManager(new GridLayoutManager(getContext(), 2));
-//        int spanCount = 2; // 3 columns
-//        int spacing = 50; // 50px
-//        boolean includeEdge = false;
-//        recyclerViewMovies.addItemDecoration(new MovieAdapter.GridSpacingItemDecoration(spanCount, spacing, includeEdge));
-//        recyclerViewMovies.setAdapter(mAdapter);
 
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        List<Movie> movies = mPresenter.getParcelableData();
+        Parcelable parcelable = Parcels.wrap(movies);
+        outState.putParcelable(EXTRA_MOVIES, parcelable);
+        Log.i(TAG, "onSaveInstanceState");
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if(savedInstanceState != null){
+            Parcelable parcelable = savedInstanceState.getParcelable(EXTRA_MOVIES);
+            List<Movie> data = Parcels.unwrap(parcelable);
+            mPresenter.restoreParcelableData(data);
+        }
+
     }
+
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -129,7 +148,7 @@ public class MainFragment extends Fragment implements MainFragmentView {
     @Override
     public void onStart() {
         super.onStart();
-
+        Log.i(TAG, "onStart");
     }
 
     @Override

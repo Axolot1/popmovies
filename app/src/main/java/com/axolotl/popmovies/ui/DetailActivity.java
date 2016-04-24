@@ -28,7 +28,6 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         ButterKnife.bind(this);
 
         if(savedInstanceState == null){

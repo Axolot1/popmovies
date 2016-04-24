@@ -14,13 +14,15 @@ import java.util.List;
 //view <--> presenter <-->interactor
 public class MainPresenterImpl implements MainFragmentPresenter, MainInteractor.OnLoadMoviesFinishListener{
 
-    MainFragmentView mMainView;
-    MainInteractor mMainIterator;
+    private List<Movie> mData;
+    private MainFragmentView mMainView;
+    private MainInteractor mMainIterator;
     private int type;
     private static final int TOP_RATED = 1;
     private static final int MOST_POPULAR = 2;
 
     public MainPresenterImpl(MainFragmentView mMainView, MainInteractor mMainIterator) {
+        Log.i("presenter", "create");
         this.mMainView = mMainView;
         this.mMainIterator = mMainIterator;
     }
@@ -29,6 +31,7 @@ public class MainPresenterImpl implements MainFragmentPresenter, MainInteractor.
 
     @Override
     public void initialize() {
+        Log.i("presenter", "init");
         mMainView.showProgress();
         mMainIterator.loadPopularMovies(this);
         type = MOST_POPULAR;
@@ -70,11 +73,24 @@ public class MainPresenterImpl implements MainFragmentPresenter, MainInteractor.
         mMainIterator.loadTopRatedMovies(this);
     }
 
+    @Override
+    public List<Movie> getParcelableData() {
+        return mData;
+    }
+
+    @Override
+    public void restoreParcelableData(List<Movie> data) {
+        this.mData = data;
+        mMainView.setItems(mData);
+        mMainView.hideProgress();
+    }
+
 
     //call back when interactor successful load data
     @Override
     public void onLoadMovieSuccess(List<Movie> movies) {
         if(movies != null && mMainView != null){
+            this.mData = movies;
             mMainView.setItems(movies);
             mMainView.hideProgress();
         }

@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 /**
  * Created by axolotl on 16/4/19.
  */
-public class DetailFragment extends Fragment {
+public class DetailFragment extends Fragment implements DfView{
 
     public static final String ARG_MOVIE = "arg_movie";
 
@@ -63,6 +63,17 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.detail_layout, container, false);
         ButterKnife.bind(this, v);
+
+        return v;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setupView();
+    }
+
+    private void setupView() {
         String porsterUrl = TdbMovieApi.IMAGE_URL + mMovie.getPosterPath();
         ImageLoader.getInstance().displayImage(porsterUrl, ivPortal);
 //        Picasso.with(getContext()).load(TdbMovieApi.IMAGE_URL + mMovie.getPosterPath()).into(ivPortal);
@@ -70,7 +81,6 @@ public class DetailFragment extends Fragment {
         tvReleaseDate.setText(mMovie.getReleaseDate());
         tvVote.setText(String.format("%s", mMovie.getVoteAverage()));
         tvOverView.setText(mMovie.getOverview());
-        return v;
     }
 
     @Override
