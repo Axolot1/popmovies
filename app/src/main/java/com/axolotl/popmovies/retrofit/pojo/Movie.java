@@ -18,7 +18,7 @@ import java.util.List;
 @Parcel(value = Parcel.Serialization.BEAN)
 @Table(name = "Movie", id = BaseColumns._ID)
 public class Movie extends Model{
-    @Column(name = "remote_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+    @Column(name = "Remote_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     @SerializedName("id")
     @Expose
     public Integer movieId;
@@ -87,6 +87,8 @@ public class Movie extends Model{
     public Movie() {
         super();
     }
+
+
 
     public String getPosterPath() {
         return posterPath;

@@ -2,7 +2,7 @@ package com.axolotl.popmovies.retrofit;
 
 import com.axolotl.popmovies.BuildConfig;
 import com.axolotl.popmovies.retrofit.pojo.PopMovies;
-import com.axolotl.popmovies.retrofit.pojo.Reviews;
+import com.axolotl.popmovies.retrofit.pojo.Videos;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -24,11 +24,11 @@ public interface TdbMovieApi {
     @GET("movie/top_rated?api_key=" + API_KEY)
     Call<PopMovies> getTopMoves();
 
-    @GET("/movie/{id}/reviews?api_key=" + API_KEY)
-    Call<Reviews> getReviews(@Path("id") int movieId);
+    @GET("movie/{id}/reviews?api_key=" + API_KEY)
+    Call<com.axolotl.popmovies.retrofit.Reviews> getReviews(@Path("id") int movieId);
 
-    @GET("/movie/{id}/videos?api_key=" + API_KEY)
-    Call<Reviews> getVideos(@Path("id") int movieId);
+    @GET("movie/{id}/videos?api_key=" + API_KEY)
+    Call<Videos> getVideos(@Path("id") int movieId);
 
 
 

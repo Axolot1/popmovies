@@ -31,9 +31,9 @@ public class MainInteractImpl implements MainInteractor {
                 if(response.isSuccessful()){
                     List<Movie> movies = response.body().getResults();
                     listener.onLoadMovieSuccess(movies);
-                    for (Movie m : movies){
-                        m.save();
-                    }
+//                    for (Movie m : movies){
+//                        m.save();
+//                    }
                 }
             }
 

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:drawableLeft="@android:drawable/ic_media_play"
     android:paddingLeft="20dp"
@@ -10,4 +13,5 @@
     android:drawablePadding="20dp"
     android:textAppearance="?android:attr/textAppearanceMedium"
     tools:text="Trailer"
+    android:id="@+id/tv_trailer"
     />

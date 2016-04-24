@@ -1,21 +1,21 @@
 
-package com.axolotl.popmovies.retrofit.pojo;
-
-import android.provider.BaseColumns;
+package com.axolotl.popmovies.retrofit;
 
 import javax.annotation.Generated;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
+import com.axolotl.popmovies.retrofit.pojo.Movie;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Table(name = "Review", id = BaseColumns._ID)
+import org.parceler.Parcel;
+
+@Parcel(value = Parcel.Serialization.BEAN)
 @Generated("org.jsonschema2pojo")
 public class Review extends Model{
 
-    @Column(name = "ReviewId", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+    @Column(name = "remote_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     @SerializedName("id")
     @Expose
     public String reviewId;
@@ -30,10 +30,8 @@ public class Review extends Model{
     @Expose
     public String content;
 
-
     @Column(name = "Movie", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
     public Movie movie;
-
 
     @SerializedName("url")
     @Expose
@@ -43,22 +41,12 @@ public class Review extends Model{
         super();
     }
 
-    /**
-     * 
-     * @return
-     *     The id
-     */
     public String getReviewId() {
         return reviewId;
     }
 
-    /**
-     * 
-     * @param id
-     *     The id
-     */
-    public void setReviewId(String id) {
-        this.reviewId = id;
+    public void setReviewId(String reviewId) {
+        this.reviewId = reviewId;
     }
 
     /**

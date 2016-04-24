@@ -5,17 +5,33 @@ import android.provider.BaseColumns;
 
 import javax.annotation.Generated;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
+@Parcel(value = Parcel.Serialization.BEAN)
 @Table(name = "Video", id = BaseColumns._ID)
 @Generated("org.jsonschema2pojo")
-public class Video {
+public class Video extends Model{
 
+    @Column(name = "remote_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     @SerializedName("id")
     @Expose
     public String videoId;
+
+    //add to youtube endpoint
+    @Column(name = "Key")
+    @SerializedName("key")
+    @Expose
+    public String key;
+
+    @Column(name = "Movie", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
+    public Movie movie;
+
     @SerializedName("iso_639_1")
     @Expose
     public String iso6391;
@@ -23,10 +39,7 @@ public class Video {
     @Expose
     public String iso31661;
 
-    //add to youtube endpoint
-    @SerializedName("key")
-    @Expose
-    public String key;
+
     @SerializedName("name")
     @Expose
     public String name;
@@ -188,5 +201,7 @@ public class Video {
     public void setType(String type) {
         this.type = type;
     }
+
+
 
 }

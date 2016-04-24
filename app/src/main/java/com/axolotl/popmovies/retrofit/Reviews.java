@@ -1,11 +1,9 @@
 
-package com.axolotl.popmovies.retrofit.pojo;
+package com.axolotl.popmovies.retrofit;
 
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Generated;
-
-import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -14,22 +12,19 @@ public class Reviews {
 
     @SerializedName("id")
     @Expose
-    public Integer id;
+    private Integer id;
     @SerializedName("page")
     @Expose
-    public Integer page;
+    private Integer page;
     @SerializedName("results")
     @Expose
-    public List<Review> results = new ArrayList<Review>();
+    private List<Review> results = new ArrayList<Review>();
     @SerializedName("total_pages")
     @Expose
-    public Integer totalPages;
+    private Integer totalPages;
     @SerializedName("total_results")
     @Expose
-    public Integer totalResults;
-
-    public Reviews() {
-    }
+    private Integer totalResults;
 
     /**
      * 
