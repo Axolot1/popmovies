@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -41,7 +43,7 @@ import butterknife.ButterKnife;
 /**
  * Created by axolotl on 16/4/19.
  */
-public class DetailFragment extends Fragment implements DfView{
+public class DetailFragment extends Fragment implements DfView {
 
     public static final String ARG_MOVIE = "arg_movie";
     private static final String EXTRA_VIDEO = "extra_video";
@@ -71,6 +73,10 @@ public class DetailFragment extends Fragment implements DfView{
     ReviewAdapter reviewAdapter;
     @Inject
     TrailerAdapter trailerAdapter;
+    @Bind(R.id.sv_detail)
+    ScrollView svDetail;
+    @Bind(R.id.rl_layout)
+    RelativeLayout rlLayout;
 
     private Movie mMovie;
     private boolean isCheck;
@@ -105,14 +111,14 @@ public class DetailFragment extends Fragment implements DfView{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupView();
-        if(savedInstanceState == null){
-            if(mMovie.favor){
+        if (savedInstanceState == null) {
+            if (mMovie.favor) {
                 mMovie = DbUtils.findMovie(mMovie.movieId);
                 List<Video> videos = DbUtils.findVideos(mMovie);
                 List<Review> reviews = DbUtils.findReviews(mMovie);
                 detailFraPresenter.restoreVideos(videos);
                 detailFraPresenter.restoreReviews(reviews);
-            }else {
+            } else {
                 detailFraPresenter.initialize(mMovie.movieId);
             }
         }
@@ -121,7 +127,7 @@ public class DetailFragment extends Fragment implements DfView{
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             List<Video> videos = Parcels.unwrap(savedInstanceState.getParcelable(EXTRA_VIDEO));
             List<Review> reviews = Parcels.unwrap(savedInstanceState.getParcelable(EXTRA_REVIWS));
             detailFraPresenter.restoreReviews(reviews);
@@ -145,9 +151,9 @@ public class DetailFragment extends Fragment implements DfView{
         btnFavor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     detailFraPresenter.saveMovieDetail(mMovie);
-                }else{
+                } else {
                     detailFraPresenter.delMovie(mMovie.movieId);
                 }
             }
@@ -156,20 +162,24 @@ public class DetailFragment extends Fragment implements DfView{
 
     private void setupToggleBtn() {
         Movie nm = DbUtils.findMovie(mMovie.movieId);
-        if(nm == null){
+        if (nm == null) {
             btnFavor.setChecked(false);
-        }else{
+        } else {
             btnFavor.setChecked(true);
             isCheck = true;
         }
     }
 
     private void setupRecyclerView() {
-        rcvReviews.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        rcvReviews.setAdapter(reviewAdapter);
-
         rcvTrailers.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rcvTrailers.setAdapter(trailerAdapter);
+        rcvTrailers.setNestedScrollingEnabled(true);
+
+        rcvReviews.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        rcvReviews.setAdapter(reviewAdapter);
+        rcvReviews.setNestedScrollingEnabled(true);
+
+
     }
 
     @Override
@@ -182,28 +192,37 @@ public class DetailFragment extends Fragment implements DfView{
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        rlLayout.setFocusable(true);
+        rlLayout.setFocusableInTouchMode(true);
+        rlLayout.requestFocus();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
 
+
     @Override
     public void setReviews(List<Review> reviews) {
-        if(reviews != null){
+        if (reviews != null) {
             reviewAdapter.setData(reviews);
         }
     }
 
     @Override
     public void setVideo(List<Video> videos) {
-        if(videos != null){
+        if (videos != null) {
             trailerAdapter.setData(videos);
         }
     }
 
     @Override
     public void clickTrailer(Video video) {
-        String url = TdbMovieApi.YOUTUBE_URL+video.getKey();
+        String url = TdbMovieApi.YOUTUBE_URL + video.getKey();
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);
