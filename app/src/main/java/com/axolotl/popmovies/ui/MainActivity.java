@@ -9,6 +9,7 @@ import com.axolotl.popmovies.R;
 
 public class MainActivity extends AppCompatActivity {
 
+    private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,13 +17,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (savedInstanceState == null) {
-            MainFragment fragment = new MainFragment();
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.main_container, fragment)
-                    .commit();
-        }
     }
 
     @Override
