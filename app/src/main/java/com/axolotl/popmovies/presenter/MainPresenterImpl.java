@@ -78,11 +78,11 @@ public class MainPresenterImpl implements MainFragmentPresenter{
         refreshLocalMovie();
     }
 
-    private void refreshLocalMovie() {
+    @Override
+    public void refreshLocalMovie() {
         List<Movie> movies = DbUtils.getLocalMovies();
         if(movies == null || movies.size() == 0){
             mMainView.showMessage("No Favor Movies yet");
-            return ;
         }
         type = MY_FAVOR;
         mMainView.setItems(movies);

@@ -13,7 +13,7 @@ import retrofit2.http.Path;
  */
 public interface TdbMovieApi {
     String BASE_URL = "http://api.themoviedb.org/3/";
-    String IMAGE_URL = "http://image.tmdb.org/t/p/w185/";
+    String IMAGE_URL = "http://image.tmdb.org/t/p/w342/";
     String YOUTUBE_URL = "https://www.youtube.com/watch?v=";
 
     String API_KEY = BuildConfig.MOVIE_DB_API_KEY;

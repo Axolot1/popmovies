@@ -1,5 +1,6 @@
 package com.axolotl.popmovies.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -81,15 +82,24 @@ public class DetailFragment extends Fragment implements DfView {
     private Movie mMovie;
     private boolean isCheck;
 
+    public interface CallBack{
+        void onDelMovie();
+    }
+
     public DetailFragment() {
         setHasOptionsMenu(true);
     }
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeInjector();
-        mMovie = Parcels.unwrap(getArguments().getParcelable(ARG_MOVIE));
+        Bundle argument = getArguments();
+        if (argument != null) {
+            mMovie = Parcels.unwrap(getArguments().getParcelable(ARG_MOVIE));
+        }
     }
 
     private void initializeInjector() {
@@ -110,6 +120,14 @@ public class DetailFragment extends Fragment implements DfView {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //initially show empty screen
+        if (mMovie == null) {
+            svDetail.setVisibility(View.GONE);
+            return;
+        } else {
+            svDetail.setVisibility(View.VISIBLE);
+        }
+
         setupView();
         if (savedInstanceState == null) {
             if (mMovie.favor) {
@@ -226,5 +244,13 @@ public class DetailFragment extends Fragment implements DfView {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);
+    }
+
+    @Override
+    public void delMovieSuccess() {
+        Activity activity = getActivity();
+        if(activity instanceof MainActivity) {
+            ((MainActivity) getActivity()).onDelMovie();
+        }
     }
 }

@@ -4,9 +4,9 @@
     <dimen name="activity_vertical_margin">10dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="main_margin">10dp</dimen>
-    <dimen name="portal_height">200dp</dimen>
+    <dimen name="portal_height">260dp</dimen>
     <dimen name="detail_portal_height">180dp</dimen>
-    <dimen name="portal_width">120dp</dimen>
+    <dimen name="portal_width">180dp</dimen>
     <dimen name="item_margin">5dp</dimen>
 
 </resources>

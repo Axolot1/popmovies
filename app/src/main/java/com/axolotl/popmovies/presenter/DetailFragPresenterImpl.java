@@ -82,6 +82,7 @@ public class DetailFragPresenterImpl implements DetailFraPresenter {
     @Override
     public void delMovie(int movieId) {
         DbUtils.delMovie(movieId);
+        mDfView.delMovieSuccess();
     }
 
 

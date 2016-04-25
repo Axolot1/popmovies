@@ -50,6 +50,13 @@ public class MainFragment extends Fragment implements MainFragmentView {
     @Inject
     MainFragmentPresenter mPresenter;
 
+    private boolean twoPaneLayout;
+
+
+
+    public interface CallBack{
+        void onItemClick(Movie movie);
+    }
 
     public MainFragment() {
     }
@@ -93,8 +100,8 @@ public class MainFragment extends Fragment implements MainFragmentView {
     }
 
     private void setupRecyclerView() {
-        recyclerViewMovies.addItemDecoration(new AutoFitRecyclerView.MarginDecoration(getContext()
-                .getResources().getDimensionPixelSize(R.dimen.item_margin)));
+//        recyclerViewMovies.addItemDecoration(new AutoFitRecyclerView.MarginDecoration(getContext()
+//                .getResources().getDimensionPixelSize(R.dimen.item_margin)));
         recyclerViewMovies.setAdapter(mAdapter);
 
     }
@@ -187,14 +194,21 @@ public class MainFragment extends Fragment implements MainFragmentView {
 
     @Override
     public void onItemClick(Movie m) {
-        Intent i = new Intent(getActivity(), DetailActivity.class);
-        i.putExtra(DetailActivity.EXTRA_MOVIE, Parcels.wrap(m));
-        startActivity(i);
+        ((MainActivity)getActivity()).onItemClick(m);
+
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    public void setTwoPaneLayout(boolean twoPaneLayout) {
+        this.twoPaneLayout = twoPaneLayout;
+    }
+
+    public void refreshData() {
+        mPresenter.refreshLocalMovie();
     }
 }

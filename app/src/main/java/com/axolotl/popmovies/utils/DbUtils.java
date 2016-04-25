@@ -19,13 +19,13 @@ public class DbUtils {
         movie.save();
         ActiveAndroid.beginTransaction();
         try {
-            if(videos != null) {
+            if (videos != null) {
                 for (Video v : videos) {
                     v.setMovie(movie);
                     v.save();
                 }
             }
-            if(reviews != null) {
+            if (reviews != null) {
                 for (Review r : reviews) {
                     r.setMovie(movie);
                     r.save();
@@ -40,8 +40,8 @@ public class DbUtils {
     public static void delMovie(int movieId) {
         ActiveAndroid.beginTransaction();
         Movie m = findMovie(movieId);
-        if(m == null){
-            return ;
+        if (m == null) {
+            return;
         }
         List<Video> videos = findVideos(m);
         List<Review> reviews = findReviews(m);
@@ -52,8 +52,8 @@ public class DbUtils {
                     v.delete();
                 }
             }
-            if(reviews != null){
-                for(Review review : reviews){
+            if (reviews != null) {
+                for (Review review : reviews) {
                     Log.i("db", "del r");
                     review.delete();
                 }
@@ -77,16 +77,22 @@ public class DbUtils {
                 .from(Video.class)
                 .where("Movie = ?", m.getId())
                 .execute();
+
     }
 
-    public static Movie findMovie(int movieId){
-        return new Select()
-                .from(Movie.class)
-                .where("Remote_id = ?", movieId)
-                .executeSingle();
+    public static Movie findMovie(int movieId) {
+        try {
+            return new Select()
+                    .from(Movie.class)
+                    .where("Remote_id = ?", movieId)
+                    .executeSingle();
+        } catch (Exception e) {
+        }
+        return null;
+
     }
 
-    public static List<Movie> getLocalMovies(){
+    public static List<Movie> getLocalMovies() {
         return new Select()
                 .from(Movie.class)
                 .execute();

@@ -14,4 +14,6 @@ public interface DfView {
     void setReviews(List<Review> reviews);
     void setVideo(List<Video> videos);
     void clickTrailer(Video video);
+
+    void delMovieSuccess();
 }
