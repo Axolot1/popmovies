@@ -1,6 +1,7 @@
 package com.axolotl.popmovies.presenter;
 
 import com.axolotl.popmovies.retrofit.Review;
+import com.axolotl.popmovies.retrofit.pojo.Movie;
 import com.axolotl.popmovies.retrofit.pojo.Video;
 
 import java.util.List;
@@ -14,6 +15,6 @@ public interface DetailFraPresenter {
     void restoreReviews(List<Review> reviews);
     List<Video> getVideos();
     void restoreVideos(List<Video> videos);
-    void clickFavorBtn();
-
+    void saveMovieDetail(Movie movie);
+    void delMovie(int movie);
 }

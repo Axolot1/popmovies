@@ -1,10 +1,9 @@
 package com.axolotl.popmovies.presenter;
 
-import android.util.Log;
-
 import com.axolotl.popmovies.interactor.MainInteractor;
 import com.axolotl.popmovies.retrofit.pojo.Movie;
 import com.axolotl.popmovies.ui.MainFragmentView;
+import com.axolotl.popmovies.utils.DbUtils;
 
 import java.util.List;
 
@@ -12,7 +11,7 @@ import java.util.List;
  * Created by axolotl on 16/4/7.
  */
 //view <--> presenter <-->interactor
-public class MainPresenterImpl implements MainFragmentPresenter, MainInteractor.OnLoadMoviesFinishListener{
+public class MainPresenterImpl implements MainFragmentPresenter{
 
     private List<Movie> mData;
     private MainFragmentView mMainView;
@@ -20,9 +19,9 @@ public class MainPresenterImpl implements MainFragmentPresenter, MainInteractor.
     private int type;
     private static final int TOP_RATED = 1;
     private static final int MOST_POPULAR = 2;
+    private static final int MY_FAVOR = 3;
 
     public MainPresenterImpl(MainFragmentView mMainView, MainInteractor mMainIterator) {
-        Log.i("presenter", "create");
         this.mMainView = mMainView;
         this.mMainIterator = mMainIterator;
     }
@@ -31,15 +30,15 @@ public class MainPresenterImpl implements MainFragmentPresenter, MainInteractor.
 
     @Override
     public void initialize() {
-        Log.i("presenter", "init");
         mMainView.showProgress();
-        mMainIterator.loadPopularMovies(this);
-        type = MOST_POPULAR;
+        mMainIterator.loadPopularMovies(new LoadMovieListener(MOST_POPULAR));
     }
 
     @Override
     public void onResume() {
-
+        if(type == MY_FAVOR){
+            refreshLocalMovie();
+        }
     }
 
     @Override
@@ -59,8 +58,7 @@ public class MainPresenterImpl implements MainFragmentPresenter, MainInteractor.
         if (type == MOST_POPULAR){
             return ;
         }
-        type = MOST_POPULAR;
-        mMainIterator.loadPopularMovies(this);
+        mMainIterator.loadPopularMovies(new LoadMovieListener(MOST_POPULAR));
 
     }
 
@@ -69,8 +67,26 @@ public class MainPresenterImpl implements MainFragmentPresenter, MainInteractor.
         if(type == TOP_RATED){
             return ;
         }
-        type = TOP_RATED;
-        mMainIterator.loadTopRatedMovies(this);
+        mMainIterator.loadTopRatedMovies(new LoadMovieListener(TOP_RATED));
+    }
+
+    @Override
+    public void clickMenuFavor() {
+        if(type == MY_FAVOR){
+            return ;
+        }
+        refreshLocalMovie();
+    }
+
+    private void refreshLocalMovie() {
+        List<Movie> movies = DbUtils.getLocalMovies();
+        if(movies == null || movies.size() == 0){
+            mMainView.showMessage("No Favor Movies yet");
+            return ;
+        }
+        type = MY_FAVOR;
+        mMainView.setItems(movies);
+        mMainView.hideProgress();
     }
 
     @Override
@@ -86,23 +102,30 @@ public class MainPresenterImpl implements MainFragmentPresenter, MainInteractor.
     }
 
 
-    //call back when interactor successful load data
-    @Override
-    public void onLoadMovieSuccess(List<Movie> movies) {
-        if(movies != null && mMainView != null){
-            this.mData = movies;
-            mMainView.setItems(movies);
+    public class LoadMovieListener implements MainInteractor.OnLoadMoviesFinishListener{
+
+        public int type;
+
+        public LoadMovieListener(int type) {
+            this.type = type;
+        }
+
+        @Override
+        public void onLoadMovieSuccess(List<Movie> movies) {
+            if(movies != null && mMainView != null){
+                mData = movies;
+                mMainView.setItems(movies);
+                mMainView.hideProgress();
+                MainPresenterImpl.this.type = this.type;
+            }
+        }
+
+        @Override
+        public void onLoadFail(String error) {
+            mMainView.showMessage("network problem");
             mMainView.hideProgress();
         }
     }
 
-    //call back when interactor fail to load data
-    @Override
-    public void onLoadFail(String error) {
-        if(mMainView != null) {
-            mMainView.showMessage(error);
-            mMainView.hideProgress();
-            Log.i("pop", error);
-        }
-    }
+
 }

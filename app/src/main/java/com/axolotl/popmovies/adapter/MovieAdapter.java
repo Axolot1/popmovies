@@ -1,7 +1,5 @@
 package com.axolotl.popmovies.adapter;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,13 +10,9 @@ import android.widget.ImageView;
 import com.axolotl.popmovies.R;
 import com.axolotl.popmovies.retrofit.TdbMovieApi;
 import com.axolotl.popmovies.retrofit.pojo.Movie;
-import com.axolotl.popmovies.ui.DetailActivity;
 import com.axolotl.popmovies.ui.MainFragmentView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.picasso.Picasso;
-
-import org.parceler.Parcel;
-import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;

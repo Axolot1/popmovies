@@ -1,7 +1,6 @@
 package com.axolotl.popmovies.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,14 +36,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         Review review = mData.get(position);
-        Log.i("detail", "bind" + review.getAuthor());
         holder.tvAuthor.setText(review.getAuthor());
         holder.tvReview.setText(review.getContent());
     }
 
     public void setData(List<Review> reviews){
         if(reviews != null){
-            Log.i("detail", "frag set data " + reviews.size());
             mData = reviews;
             this.notifyDataSetChanged();
         }

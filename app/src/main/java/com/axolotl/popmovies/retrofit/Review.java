@@ -1,18 +1,24 @@
 
 package com.axolotl.popmovies.retrofit;
 
+import android.provider.BaseColumns;
+
 import javax.annotation.Generated;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.axolotl.popmovies.retrofit.pojo.Movie;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
+import dagger.Module;
+
 @Parcel(value = Parcel.Serialization.BEAN)
 @Generated("org.jsonschema2pojo")
+@Table(name = "Review", id = BaseColumns._ID)
 public class Review extends Model{
 
     @Column(name = "remote_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
@@ -30,7 +36,7 @@ public class Review extends Model{
     @Expose
     public String content;
 
-    @Column(name = "Movie", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
+    @Column(name = "Movie")
     public Movie movie;
 
     @SerializedName("url")
@@ -103,4 +109,11 @@ public class Review extends Model{
         this.url = url;
     }
 
+    public Movie getMovie() {
+        return movie;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
 }

@@ -2,8 +2,10 @@ package com.axolotl.popmovies.presenter;
 
 import com.axolotl.popmovies.interactor.DetailInterator;
 import com.axolotl.popmovies.retrofit.Review;
+import com.axolotl.popmovies.retrofit.pojo.Movie;
 import com.axolotl.popmovies.retrofit.pojo.Video;
 import com.axolotl.popmovies.ui.DfView;
+import com.axolotl.popmovies.utils.DbUtils;
 
 import java.util.List;
 
@@ -73,8 +75,13 @@ public class DetailFragPresenterImpl implements DetailFraPresenter {
     }
 
     @Override
-    public void clickFavorBtn() {
+    public void saveMovieDetail(Movie movie) {
+        DbUtils.saveMovie(movie, mVideos, mReviews);
+    }
 
+    @Override
+    public void delMovie(int movieId) {
+        DbUtils.delMovie(movieId);
     }
 
 

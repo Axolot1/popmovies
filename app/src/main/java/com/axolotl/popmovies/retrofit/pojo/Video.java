@@ -29,7 +29,7 @@ public class Video extends Model{
     @Expose
     public String key;
 
-    @Column(name = "Movie", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
+    @Column(name = "Movie")
     public Movie movie;
 
     @SerializedName("iso_639_1")
@@ -203,5 +203,11 @@ public class Video extends Model{
     }
 
 
+    public Movie getMovie() {
+        return movie;
+    }
 
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
 }

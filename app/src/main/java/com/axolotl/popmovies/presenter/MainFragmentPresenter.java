@@ -12,4 +12,5 @@ public interface MainFragmentPresenter extends Presenter{
     void clickMenuTopRated();
     List<Movie> getParcelableData();
     void restoreParcelableData(List<Movie> data);
+    void clickMenuFavor();
 }

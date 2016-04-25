@@ -6,11 +6,11 @@ import android.provider.BaseColumns;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.axolotl.popmovies.retrofit.Review;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
-import org.parceler.ParcelClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +68,14 @@ public class Movie extends Model{
     @Expose
     public String backdropPath;
 
+    @Column(name = "VoteAverage")
+    @SerializedName("vote_average")
+    @Expose
+    public Double voteAverage;
+
+    @Column(name = "Favor")
+    public boolean favor;
+
     @SerializedName("popularity")
     @Expose
     public Double popularity;
@@ -80,15 +88,28 @@ public class Movie extends Model{
     @Expose
     public Boolean video;
 
-    @SerializedName("vote_average")
-    @Expose
-    public Double voteAverage;
+
 
     public Movie() {
         super();
     }
 
+    public List<Video> getVideos(){
+        return getMany(Video.class, "Movie");
+    }
 
+    public List<Review> getReviews(){
+        return getMany(Review.class, "Movie");
+    }
+
+
+    public boolean isFavor() {
+        return favor;
+    }
+
+    public void setFavor(boolean favor) {
+        this.favor = favor;
+    }
 
     public String getPosterPath() {
         return posterPath;

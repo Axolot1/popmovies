@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.ContentLoadingProgressBar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -51,7 +50,6 @@ public class MainFragment extends Fragment implements MainFragmentView {
     @Inject
     MainFragmentPresenter mPresenter;
 
-    private static final String TAG = "fragment";
 
     public MainFragment() {
     }
@@ -73,7 +71,6 @@ public class MainFragment extends Fragment implements MainFragmentView {
         setHasOptionsMenu(true);
         initializeInjector();
 
-        Log.i(TAG, "onCreate");
     }
 
 
@@ -81,7 +78,6 @@ public class MainFragment extends Fragment implements MainFragmentView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i(TAG, "onCreateView");
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -110,7 +106,6 @@ public class MainFragment extends Fragment implements MainFragmentView {
         List<Movie> movies = mPresenter.getParcelableData();
         Parcelable parcelable = Parcels.wrap(movies);
         outState.putParcelable(EXTRA_MOVIES, parcelable);
-        Log.i(TAG, "onSaveInstanceState");
     }
 
     @Override
@@ -141,6 +136,8 @@ public class MainFragment extends Fragment implements MainFragmentView {
             case R.id.top_rated:
                 mPresenter.clickMenuTopRated();
                 break;
+            case R.id.favor:
+                mPresenter.clickMenuFavor();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -148,7 +145,12 @@ public class MainFragment extends Fragment implements MainFragmentView {
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.onResume();
     }
 
     @Override

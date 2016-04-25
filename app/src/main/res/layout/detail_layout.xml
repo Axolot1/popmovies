@@ -1,122 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray"
-    android:fitsSystemWindows="true">
+    >
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/ll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rl_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <RelativeLayout
-                android:layout_width="match_parent"
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                card_view:cardElevation="3dp">
 
-                <android.support.v7.widget.CardView
-                    android:id="@+id/card_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    card_view:cardElevation="3dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    >
-                    <ImageView
-                        android:id="@+id/iv_portal"
-                        android:layout_width="@dimen/portal_width"
-                        android:layout_height="@dimen/detail_portal_height"
-                        android:scaleType="fitXY"
-                        tools:src="@mipmap/ic_launcher" />
-                </android.support.v7.widget.CardView>
+                <ImageView
+                    android:id="@+id/iv_portal"
+                    android:layout_width="@dimen/portal_width"
+                    android:layout_height="@dimen/detail_portal_height"
+                    android:focusable="true"
+                    android:scaleType="fitXY"
+                    tools:src="@mipmap/ic_launcher" />
+            </android.support.v7.widget.CardView>
 
-
-                <TextView
-                    android:id="@+id/tv_title"
-                    style="@style/tv_movie_detail"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@android:color/black"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="30dp"
-                    tools:text="Title" />
-                <TextView
-                    android:id="@+id/tv_release_date"
-                    tools:text="release date"
-                    style="@style/tv_movie_detail"
-                    android:maxWidth="100dp"
-                    android:layout_below="@id/tv_title"
-                    android:layout_marginTop="5dp"
-                    />
-                <TextView
-                    android:id="@+id/tv_vote"
-                    style="@style/tv_movie_detail"
-                    android:layout_below="@id/tv_release_date"
-                    android:layout_marginTop="5dp"
-                    tools:text="rated"
-                    />
-
-                <ToggleButton
-                    android:id="@+id/btn_favor"
-                    style="@style/tv_movie_detail"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/btn_blue"
-                    android:layout_width="70dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_below="@+id/tv_vote"
-                    android:textOff="Mark as Favor"
-                    android:textOn="UnMark"
-                    />
-
-                <TextView
-                    android:id="@+id/tv_overView"
-                    tools:text="hello world"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/card_view"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    />
-
-            </RelativeLayout>
-
-            <View style="@style/line" />
 
             <TextView
-                android:text="@string/trailers"
-                style="@style/detail_text_attri" />
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rcv_trailers"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:listitem="@layout/trailer_item"
-                />
-
-            <View style="@style/line" />
+                android:id="@+id/tv_title"
+                style="@style/tv_movie_detail"
+                android:layout_marginTop="30dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black"
+                tools:text="Title" />
 
             <TextView
-                android:text="@string/reviews"
-                style="@style/detail_text_attri" />
+                android:id="@+id/tv_release_date"
+                style="@style/tv_movie_detail"
+                android:layout_below="@id/tv_title"
+                android:layout_marginTop="5dp"
+                android:maxWidth="100dp"
+                tools:text="release date" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rcv_reviews"
-                android:layout_marginBottom="20dp"
+            <TextView
+                android:id="@+id/tv_vote"
+                style="@style/tv_movie_detail"
+                android:layout_below="@id/tv_release_date"
+                android:layout_marginTop="5dp"
+                tools:text="rated" />
+
+            <ToggleButton
+                android:id="@+id/btn_favor"
+                style="@style/tv_movie_detail"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:layout_below="@+id/tv_vote"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/btn_blue"
+                android:textColor="@android:color/white"
+                android:textOff="Mark as Favor"
+                android:textOn="UnMark" />
+
+            <TextView
+                android:id="@+id/tv_overView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/review_item"
-                />
+                android:layout_below="@id/card_view"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                tools:text="hello world" />
+
+        </RelativeLayout>
+
+        <View style="@style/line" />
+
+        <TextView
+            style="@style/detail_text_attri"
+            android:text="@string/trailers" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcv_trailers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/trailer_item" />
+
+        <View style="@style/line" />
+
+        <TextView
+            style="@style/detail_text_attri"
+            android:text="@string/reviews" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcv_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            tools:listitem="@layout/review_item" />
 
 
-        </LinearLayout>
+    </LinearLayout>
 
-    </ScrollView>
+</ScrollView>
 
 
-</android.support.design.widget.CoordinatorLayout>

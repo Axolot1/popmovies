@@ -1,14 +1,16 @@
 package com.axolotl.popmovies.ui;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -24,6 +26,7 @@ import com.axolotl.popmovies.retrofit.Review;
 import com.axolotl.popmovies.retrofit.TdbMovieApi;
 import com.axolotl.popmovies.retrofit.pojo.Movie;
 import com.axolotl.popmovies.retrofit.pojo.Video;
+import com.axolotl.popmovies.utils.DbUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.parceler.Parcels;
@@ -43,6 +46,7 @@ public class DetailFragment extends Fragment implements DfView{
     public static final String ARG_MOVIE = "arg_movie";
     private static final String EXTRA_VIDEO = "extra_video";
     private static final String EXTRA_REVIWS = "extra_review";
+
 
     @Bind(R.id.iv_portal)
     ImageView ivPortal;
@@ -69,6 +73,7 @@ public class DetailFragment extends Fragment implements DfView{
     TrailerAdapter trailerAdapter;
 
     private Movie mMovie;
+    private boolean isCheck;
 
     public DetailFragment() {
         setHasOptionsMenu(true);
@@ -101,7 +106,15 @@ public class DetailFragment extends Fragment implements DfView{
         super.onViewCreated(view, savedInstanceState);
         setupView();
         if(savedInstanceState == null){
-            detailFraPresenter.initialize(mMovie.movieId);
+            if(mMovie.favor){
+                mMovie = DbUtils.findMovie(mMovie.movieId);
+                List<Video> videos = DbUtils.findVideos(mMovie);
+                List<Review> reviews = DbUtils.findReviews(mMovie);
+                detailFraPresenter.restoreVideos(videos);
+                detailFraPresenter.restoreReviews(reviews);
+            }else {
+                detailFraPresenter.initialize(mMovie.movieId);
+            }
         }
     }
 
@@ -125,19 +138,38 @@ public class DetailFragment extends Fragment implements DfView{
         tvVote.setText(String.format("%s", mMovie.getVoteAverage()));
         tvOverView.setText(mMovie.getOverview());
 
+        setupRecyclerView();
+
+        setupToggleBtn();
+
+        btnFavor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    detailFraPresenter.saveMovieDetail(mMovie);
+                }else{
+                    detailFraPresenter.delMovie(mMovie.movieId);
+                }
+            }
+        });
+    }
+
+    private void setupToggleBtn() {
+        Movie nm = DbUtils.findMovie(mMovie.movieId);
+        if(nm == null){
+            btnFavor.setChecked(false);
+        }else{
+            btnFavor.setChecked(true);
+            isCheck = true;
+        }
+    }
+
+    private void setupRecyclerView() {
         rcvReviews.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rcvReviews.setAdapter(reviewAdapter);
 
         rcvTrailers.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rcvTrailers.setAdapter(trailerAdapter);
-
-        btnFavor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mMovie.save();
-
-            }
-        });
     }
 
     @Override
@@ -159,7 +191,6 @@ public class DetailFragment extends Fragment implements DfView{
     public void setReviews(List<Review> reviews) {
         if(reviews != null){
             reviewAdapter.setData(reviews);
-            Log.i("detail", "setup reviews");
         }
     }
 
@@ -168,5 +199,13 @@ public class DetailFragment extends Fragment implements DfView{
         if(videos != null){
             trailerAdapter.setData(videos);
         }
+    }
+
+    @Override
+    public void clickTrailer(Video video) {
+        String url = TdbMovieApi.YOUTUBE_URL+video.getKey();
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
     }
 }

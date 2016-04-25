@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.axolotl.popmovies.R;
 import com.axolotl.popmovies.retrofit.pojo.Video;
+import com.axolotl.popmovies.ui.DfView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,11 @@ import butterknife.ButterKnife;
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHolder> {
 
     private List<Video> mData;
+    private DfView mDfView;
 
-    public TrailerAdapter() {
+    public TrailerAdapter(DfView dfView) {
         mData = new ArrayList<>();
+        this.mDfView = dfView;
     }
 
     @Override
@@ -34,8 +37,14 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Video video = mData.get(position);
+        final Video video = mData.get(position);
         holder.tvTrailer.setText(String.format("Trailer %d", position + 1));
+        holder.tvTrailer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDfView.clickTrailer(video);
+            }
+        });
     }
 
     public void setData(List<Video> videos){

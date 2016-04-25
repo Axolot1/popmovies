@@ -40,6 +40,6 @@ public class DetailFraModule {
 
     @Provides
     public TrailerAdapter providesTrailerAdapter(){
-        return new TrailerAdapter();
+        return new TrailerAdapter(mView);
     }
 }
