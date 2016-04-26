@@ -8,7 +8,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.axolotl.popmovies.retrofit.TdbMovieApi;
-import com.axolotl.popmovies.utils.NetHelper;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -109,25 +108,6 @@ public class NetModule {
         return file;
     }
 
-    public class MInterceptor implements Interceptor
-    {
-        @Override
-        public Response intercept(Chain chain) throws IOException
-        {
-            Request request = chain.request();
-            if (!NetHelper.getInstance().isConnected())
-            {
-                request = request
-                        .newBuilder()
-                        .cacheControl(CacheControl.FORCE_CACHE)
-                        .build();
-            }
-            Response originalResponse = chain.proceed(request);
-            return originalResponse
-                    .newBuilder()
-                    .header("Cache-Control", "public,max-age=3600")
-                    .removeHeader("Pragma").build();
-        }
-    }
+
 }
 

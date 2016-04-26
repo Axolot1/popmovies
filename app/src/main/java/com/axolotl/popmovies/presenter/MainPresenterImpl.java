@@ -1,5 +1,11 @@
 package com.axolotl.popmovies.presenter;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import com.axolotl.popmovies.interactor.MainInteractor;
 import com.axolotl.popmovies.retrofit.pojo.Movie;
 import com.axolotl.popmovies.ui.MainFragmentView;

@@ -1,5 +1,10 @@
 package com.axolotl.popmovies.dagger.module;
 
+import android.app.Application;
+import android.content.Context;
+import android.net.ConnectivityManager;
+
+import com.axolotl.popmovies.MyApp;
 import com.axolotl.popmovies.adapter.MovieAdapter;
 import com.axolotl.popmovies.interactor.MainInteractImpl;
 import com.axolotl.popmovies.interactor.MainInteractor;
@@ -42,4 +47,6 @@ public class MainFraModule {
     MovieAdapter provideMovieAdapter(Picasso picasso, MainFragmentView view){
         return new MovieAdapter(picasso, view);
     }
+
+
 }

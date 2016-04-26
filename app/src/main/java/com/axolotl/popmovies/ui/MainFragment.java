@@ -1,11 +1,17 @@
 package com.axolotl.popmovies.ui;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.ContentLoadingProgressBar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,19 +56,17 @@ public class MainFragment extends Fragment implements MainFragmentView {
     @Inject
     MainFragmentPresenter mPresenter;
 
+    ConnectivityManager mConnectivityManager;
+
     private boolean twoPaneLayout;
 
 
-
-    public interface CallBack{
+    public interface CallBack {
         void onItemClick(Movie movie);
     }
 
     public MainFragment() {
     }
-
-
-
 
 
     private void initializeInjector() {
@@ -77,9 +81,9 @@ public class MainFragment extends Fragment implements MainFragmentView {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         initializeInjector();
-
+        mConnectivityManager = (ConnectivityManager) getContext()
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
     }
-
 
 
     @Override
@@ -94,7 +98,7 @@ public class MainFragment extends Fragment implements MainFragmentView {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupRecyclerView();
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             mPresenter.initialize();
         }
     }
@@ -118,14 +122,13 @@ public class MainFragment extends Fragment implements MainFragmentView {
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             Parcelable parcelable = savedInstanceState.getParcelable(EXTRA_MOVIES);
             List<Movie> data = Parcels.unwrap(parcelable);
             mPresenter.restoreParcelableData(data);
         }
 
     }
-
 
 
     @Override
@@ -185,6 +188,10 @@ public class MainFragment extends Fragment implements MainFragmentView {
     public void setItems(List<Movie> items) {
         mAdapter.setData(items);
         mAdapter.notifyDataSetChanged();
+        //initially show detailFragment of the first movie
+        if (items != null && items.size() > 0 && twoPaneLayout) {
+            onItemClick(items.get(0));
+        }
     }
 
     @Override
@@ -194,8 +201,7 @@ public class MainFragment extends Fragment implements MainFragmentView {
 
     @Override
     public void onItemClick(Movie m) {
-        ((MainActivity)getActivity()).onItemClick(m);
-
+        ((MainActivity) getActivity()).onItemClick(m);
     }
 
     @Override
@@ -211,4 +217,5 @@ public class MainFragment extends Fragment implements MainFragmentView {
     public void refreshData() {
         mPresenter.refreshLocalMovie();
     }
+
 }
