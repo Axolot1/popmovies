@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import com.axolotl.popmovies.interactor.MainInteractor;
 import com.axolotl.popmovies.retrofit.pojo.Movie;
@@ -22,7 +23,7 @@ public class MainPresenterImpl implements MainFragmentPresenter{
     private List<Movie> mData;
     private MainFragmentView mMainView;
     private MainInteractor mMainIterator;
-    private int type;
+    private static int type;  //set to static to keep value when rotation change
     private static final int TOP_RATED = 1;
     private static final int MOST_POPULAR = 2;
     private static final int MY_FAVOR = 3;
@@ -90,6 +91,7 @@ public class MainPresenterImpl implements MainFragmentPresenter{
         if(movies == null || movies.size() == 0){
             mMainView.showMessage("No Favor Movies yet");
         }
+        mData = movies;
         type = MY_FAVOR;
         mMainView.setItems(movies);
         mMainView.hideProgress();
@@ -122,7 +124,7 @@ public class MainPresenterImpl implements MainFragmentPresenter{
                 mData = movies;
                 mMainView.setItems(movies);
                 mMainView.hideProgress();
-                MainPresenterImpl.this.type = this.type;
+                MainPresenterImpl.type = this.type;
             }
         }
 
