@@ -1,17 +1,12 @@
 package com.axolotl.popmovies.ui;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.ContentLoadingProgressBar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -157,10 +152,15 @@ public class MainFragment extends Fragment implements MainFragmentView {
         super.onStart();
     }
 
+
+
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.onResume();
+        //only call in two one pane ui to refresh data
+        if(!twoPaneLayout) {
+            mPresenter.onResume();
+        }
     }
 
     @Override
@@ -202,6 +202,12 @@ public class MainFragment extends Fragment implements MainFragmentView {
     @Override
     public void onItemClick(Movie m) {
         ((MainActivity) getActivity()).onItemClick(m);
+    }
+
+    @Override
+    public void restoreItems(List<Movie> items) {
+        mAdapter.setData(items);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

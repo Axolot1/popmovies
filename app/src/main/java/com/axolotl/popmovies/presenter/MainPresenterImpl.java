@@ -1,12 +1,5 @@
 package com.axolotl.popmovies.presenter;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.util.Log;
-
 import com.axolotl.popmovies.interactor.MainInteractor;
 import com.axolotl.popmovies.retrofit.pojo.Movie;
 import com.axolotl.popmovies.ui.MainFragmentView;
@@ -43,7 +36,7 @@ public class MainPresenterImpl implements MainFragmentPresenter{
 
     @Override
     public void onResume() {
-        if(type == MY_FAVOR){
+        if(type == MY_FAVOR) {
             refreshLocalMovie();
         }
     }
@@ -105,7 +98,7 @@ public class MainPresenterImpl implements MainFragmentPresenter{
     @Override
     public void restoreParcelableData(List<Movie> data) {
         this.mData = data;
-        mMainView.setItems(mData);
+        mMainView.restoreItems(mData);
         mMainView.hideProgress();
     }
 
