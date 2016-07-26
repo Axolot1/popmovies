@@ -17,4 +17,6 @@ public interface MainFragmentView {
     void showMessage(String message);
 
     void onItemClick(Movie m);
+
+    void restoreItems(List<Movie> items);
 }
